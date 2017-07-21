@@ -4,8 +4,8 @@
 package algorithm.chapter1_foundation;
 
 import java.util.Arrays;
-
-
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 算法第4版，第一章-基础
@@ -345,73 +345,31 @@ public class Foundation {
 		}
 	}
 	
-	/** ----------------计时测试---------------- */
-	private class Stopwatch {
-		private final long start;
-		
-		public Stopwatch() {
-			start = System.currentTimeMillis();
-		}
-
-		public double elapsedTime() {
-			long now = System.currentTimeMillis();
-			double time = (now - start) / 1000.0;
-			return time;
-		}
-	}
-	
-	public static long compute(int[] a) {
-		long count = 0;
+	public static void findDuplicateNum(int[] a) {
+		List<Integer> uniqueNumList = new LinkedList<Integer>();
 		for (int i = 0; i < a.length; i++) {
-			for (int j = i+1; j < a.length; j++) {
-				for (int k = j+1; k < a.length; k++) {
-					if (a[i] + a[j] + a[k] == 0) {
-						count++;
-					}
-				}
+			if (uniqueNumList.contains(a[i])) {
+				System.out.printf("重复的num = %d, index = %d\n", a[i], i);
+			} else {
+				uniqueNumList.add(a[i]);
 			}
 		}
-		return count;
 	}
 	
-	public static long compute2(int[] a) {
+	public static void findDuplicateNum2(int[] a) {
 		Arrays.sort(a);
-		int count = 0;
+		System.out.println(Arrays.toString(a));
+		
 		for (int i = 0; i < a.length; i++) {
-			if (binarySearch(-a[i], a) > i) {
-				count++;
+			if (binarySearch(a[i], a) > i+1) {
+				System.out.printf("重复的num = %d, index = %d\n", a[i], i);
 			}
 		}
-		return count;
 	}
-	
-	public void timeTest(int n) {
-		int[] a = new int[n];
-		int maxNum = 100000;
-		for (int i = 0; i < a.length; i++) {
-			a[i] = random(-maxNum, maxNum);
-		}
-		Stopwatch stopwatch1 = new Stopwatch();
-		long result = compute(a);
-		double time1 = stopwatch1.elapsedTime();
-		System.out.println("result1 = " + result + ", time = " + time1);
-		
-		Stopwatch stopwatch2 = new Stopwatch();
-		long result2 = compute(a);
-		double time2 = stopwatch2.elapsedTime();
-		System.out.println("result2 = " + result2 + ", time2 = " + time2);
-	}
-	/** ----------------计时测试---------------- */
-	
-	
 	
 	public static void main(String[] args) {
-		Foundation foundation = new Foundation();
-//		for (int i = 250; ; i += i) {
-//			double time = foundation.timeTest(i);
-//			System.out.println("数量 = " + i + ", 用时 = " + time + "秒");
-//		}
-		int i = 4000;
-		foundation.timeTest(i);
+		int[] a = {5, 4, 3, 2, 1, 3, 3};
+		//findDuplicateNum(a);
+		findDuplicateNum2(a);
 	}
 }
